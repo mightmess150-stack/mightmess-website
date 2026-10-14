@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض أعمالي البرمجية | Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-green-500 to-emerald-400 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-green-500/20">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <span class="font-bold text-lg bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">محفظة أعمالي</span>
+            </div>
+            
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <!-- Add Project Button -->
+                <button onclick="openModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md shadow-green-600/20 flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>إضافة مشروع جديد</span>
+                </button>
+
+                <!-- Dark Mode Toggle -->
+                <button id="themeToggle" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-4 text-center bg-gradient-to-b from-green-50/50 to-transparent dark:from-green-950/20 dark:to-transparent">
+        <div class="max-w-3xl mx-auto space-y-4">
+            <span class="inline-block py-1 px-3 rounded-full bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-xs font-bold tracking-wide uppercase">
+                مرحباً بك في عالمي البرمجي
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-black tracking-tight">
+                أنا <span class="bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">مطور برمجيات</span> شغوف
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
+                هنا أعرض أبرز مشاريعي وتطبيقاتي التي قمت بتطويرها. يمكنك تصفحها، معرفة تفاصيلها، أو إضافة مشاريعك الخاصة مباشرة.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content: Projects Section -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-2xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-green-600"></i>
+                <span>المشاريع البرمجية</span>
+            </h2>
+            <span id="projectsCount" class="text-sm font-medium px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                0 مشروع
+            </span>
+        </div>
+
+        <!-- Projects Grid -->
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic projects inserted here via JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 px-4">
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 text-3xl">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h3 class="text-lg font-bold mb-1">لا توجد مشاريع مضافة بعد</h3>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">ابدأ بإضافة أول مشروع برمجي لك لعرضه على زوار الموقع.</p>
+            <button onclick="openModal()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-md">
+                إضافة مشروع الآن
+            </button>
+        </div>
+    </main>
+
+    <!-- Add/Edit Project Modal -->
+    <div id="projectModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 dark:border-gray-800 transform transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <h3 id="modalTitle" class="text-lg font-bold">إضافة مشروع جديد</h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form id="projectForm" onsubmit="saveProject(event)" class="space-y-4">
+                <input type="hidden" id="projectId">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">اسم المشروع</label>
+                    <input type="text" id="projectTitle" required class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-green-500 text-sm" placeholder="مثال: متجر إلكتروني متكامل">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">وصف المشروع</label>
+                    <textarea id="projectDesc" rows="3" required class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-green-500 text-sm" placeholder="اكتب نبذة مختصرة عن المشروع والتقنيات المستخدمة..."></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">رابط المعاينة المباشرة (Demo)</label>
+                        <input type="url" id="projectDemo" class="w-full px
