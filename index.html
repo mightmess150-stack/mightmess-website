@@ -33,20 +33,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
-        .custom-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        .custom-modal.active {
-            display: flex;
-        }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col selection:bg-red-600 selection:text-white">
@@ -64,18 +50,6 @@
             
             <!-- أزرار التحكم -->
             <div class="flex items-center space-x-3 space-x-reverse">
-                <!-- زر الإضافة (يظهر فقط للأدمن) -->
-                <button id="addProjectBtn" type="button" onclick="openModal()" class="hidden bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md shadow-red-600/25 flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>إضافة مشروع للبيع</span>
-                </button>
-
-                <!-- زر تسجيل الدخول / الخروج -->
-                <button id="authBtn" type="button" onclick="openLoginModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold border border-gray-700 transition flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-user-lock text-red-500"></i>
-                    <span id="authBtnText">دخول الأدمن</span>
-                </button>
-
                 <!-- Dark/Light Mode Toggle -->
                 <button id="themeToggle" type="button" class="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center text-gray-300 hover:bg-gray-700 transition cursor-pointer">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-400"></i>
@@ -104,7 +78,7 @@
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-2xl font-bold flex items-center gap-2">
                 <i class="fa-solid fa-store text-red-500"></i>
-                <span>المشاريع المتاحة</span>
+                <span>المشاريع المتاحة للبيع</span>
             </h2>
             <span id="projectsCount" class="text-sm font-medium px-3 py-1 rounded-lg bg-gray-800 text-gray-300 border border-gray-700/50">
                 0 مشروع
@@ -115,92 +89,7 @@
         <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Dynamic projects inserted here via JS -->
         </div>
-
-        <!-- Empty State -->
-        <div id="emptyState" class="hidden text-center py-16 px-4">
-            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-800 flex items-center justify-center text-gray-500 text-3xl">
-                <i class="fa-solid fa-box-open"></i>
-            </div>
-            <h3 class="text-lg font-bold mb-1">لا توجد مشاريع معروضة حالياً</h3>
-            <p class="text-gray-400 text-sm mb-4">عد لاحقاً لرؤية أحدث البرمجيات المضافة.</p>
-        </div>
     </main>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="custom-modal">
-        <div class="bg-gray-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-800 relative">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold flex items-center gap-2 text-white">
-                    <i class="fa-solid fa-shield-halved text-red-500"></i> تسجيل دخول الأدمن
-                </h3>
-                <button type="button" onclick="closeLoginModal()" class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition cursor-pointer">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-300">البريد الإلكتروني</label>
-                    <input type="email" id="loginEmail" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="mightmess150@gmail.com">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-300">كلمة المرور</label>
-                    <input type="password" id="loginPassword" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="••••••••">
-                </div>
-                
-                <div class="pt-2">
-                    <button type="submit" class="w-full py-2.5 rounded-xl text-sm font-bold bg-red-600 hover:bg-red-700 text-white transition shadow-md shadow-red-600/25 cursor-pointer">تسجيل الدخول</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Add/Edit Project Modal -->
-    <div id="projectModal" class="custom-modal">
-        <div class="bg-gray-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-800 relative">
-            <div class="flex items-center justify-between mb-4">
-                <h3 id="modalTitle" class="text-lg font-bold">إضافة مشروع جديد للبيع</h3>
-                <button type="button" onclick="closeModal()" class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition cursor-pointer">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <form id="projectForm" onsubmit="saveProject(event)" class="space-y-4">
-                <input type="hidden" id="projectId">
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-300">اسم المشروع</label>
-                    <input type="text" id="projectTitle" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="مثال: تطبيق متجر إلكتروني متكامل">
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1 text-gray-300">السعر (مثال: $25)</label>
-                        <input type="text" id="projectPrice" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="$25">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1 text-gray-300">رابط الشراء (رابط الديسكورد)</label>
-                        <input type="text" id="projectBuyLink" class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="https://discord.gg/ea9UAfHnfW">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-300">وصف المشروع</label>
-                    <textarea id="projectDesc" rows="3" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="اكتب التفاصيل والميزات التي سيحصل عليها المشتري..."></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-300">رابط المعاينة المباشرة (Demo)</label>
-                    <input type="url" id="projectDemo" class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="https://example.com">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-300">التقنيات (مفصولة بفاصلة)</label>
-                    <input type="text" id="projectTech" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="HTML, Tailwind CSS, JavaScript">
-                </div>
-                
-                <div class="flex items-center justify-end space-x-3 space-x-reverse pt-2">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700 transition cursor-pointer">إلغاء</button>
-                    <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-red-600 hover:bg-red-700 text-white transition shadow-md cursor-pointer">حفظ المشروع</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="bg-gray-900 border-t border-gray-800 py-6 text-center text-sm text-gray-400">
@@ -209,109 +98,34 @@
 
     <!-- JavaScript Logic -->
     <script>
-        const ADMIN_EMAIL = "mightmess150@gmail.com";
-        const ADMIN_PASS = "25802580Ahm@9980";
-        const DEFAULT_DISCORD_LINK = "https://discord.gg/ea9UAfHnfW";
+        const DISCORD_SERVER_LINK = "https://discord.gg/ea9UAfHnfW";
 
-        let isAdmin = localStorage.getItem('is_admin_logged_in') === 'true';
-
-        const defaultProjects = [
+        // قائمة المنتجات الخاصة بك (أي مشروع تضيفه هنا سيظهر لكل الزوار في العالم فوراً)
+        const storeProjects = [
             {
                 id: '1',
                 title: 'TaskFlow - نظام إدارة المهام والإنتاجية',
                 desc: 'تطبيق متكامل لإدارة المهام وتتبع الإنتاجية مدعوم بمؤقت Pomodoro الذكي مع حفظ البيانات.',
                 price: '$25',
                 demo: '#',
-                buyLink: DEFAULT_DISCORD_LINK,
+                buyLink: DISCORD_SERVER_LINK,
                 tech: ['HTML5', 'Tailwind CSS', 'JavaScript']
             }
+            // يمكنك إضافة مشاريع جديدة هنا بسهولة بنفس التنسيق
         ];
-
-        let projects = defaultProjects;
-        try {
-            const stored = localStorage.getItem('my_portfolio_projects');
-            if (stored) {
-                projects = JSON.parse(stored);
-            }
-        } catch(e) {
-            projects = defaultProjects;
-        }
-
-        function checkAdminState() {
-            const addBtn = document.getElementById('addProjectBtn');
-            const authBtnText = document.getElementById('authBtnText');
-            
-            if (isAdmin) {
-                if (addBtn) addBtn.classList.remove('hidden');
-                if (authBtnText) authBtnText.innerText = "تسجيل الخروج";
-            } else {
-                if (addBtn) addBtn.classList.add('hidden');
-                if (authBtnText) authBtnText.innerText = "دخول الأدمن";
-            }
-            renderProjects();
-        }
-
-        function openLoginModal() {
-            if (isAdmin) {
-                isAdmin = false;
-                localStorage.setItem('is_admin_logged_in', 'false');
-                alert('تم تسجيل الخروج بنجاح');
-                checkAdminState();
-            } else {
-                document.getElementById('loginModal').classList.add('active');
-            }
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
-            const pass = document.getElementById('loginPassword').value.trim();
-
-            if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-                isAdmin = true;
-                localStorage.setItem('is_admin_logged_in', 'true');
-                closeLoginModal();
-                checkAdminState();
-                alert('مرحباً بك يا أدمن! يمكنك الآن إضافة وتعديل المشاريع.');
-            } else {
-                alert('بيانات الدخول غير صحيحة!');
-            }
-        }
 
         function renderProjects() {
             const grid = document.getElementById('projectsGrid');
-            const emptyState = document.getElementById('emptyState');
             const countBadge = document.getElementById('projectsCount');
             
-            if (countBadge) countBadge.innerText = `${projects.length} مشروع`;
+            if (countBadge) countBadge.innerText = `${storeProjects.length} مشروع`;
 
-            if (projects.length === 0) {
-                if (grid) grid.innerHTML = '';
-                if (emptyState) emptyState.classList.remove('hidden');
-                return;
-            }
-
-            if (emptyState) emptyState.classList.add('hidden');
             if (grid) {
-                grid.innerHTML = projects.map(p => `
+                grid.innerHTML = storeProjects.map(p => `
                     <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-sm hover:border-red-500/50 transition flex flex-col justify-between group">
                         <div>
                             <div class="flex items-start justify-between mb-3">
                                 <h3 class="font-bold text-lg group-hover:text-red-500 transition text-gray-100">${escapeHtml(p.title)}</h3>
-                                
-                                ${isAdmin ? `
-                                <div class="flex items-center space-x-1 space-x-reverse relative z-10">
-                                    <button type="button" onclick="editProject('${p.id}')" class="w-8 h-8 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 flex items-center justify-center text-xs cursor-pointer" title="تعديل">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button type="button" onclick="deleteProject('${p.id}')" class="w-8 h-8 rounded-lg bg-red-950/40 text-red-400 hover:bg-red-900/50 flex items-center justify-center text-xs cursor-pointer" title="حذف">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>` : ''}
                             </div>
 
                             <p class="text-gray-400 text-sm mb-4 line-clamp-3">${escapeHtml(p.desc)}</p>
@@ -321,78 +135,16 @@
                             </div>
                         </div>
 
-                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between gap-3 relative z-10">
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between gap-3">
                             <span class="text-xl font-black text-white">${escapeHtml(p.price || 'حسب الطلب')}</span>
                             
                             <div class="flex items-center gap-2">
                                 ${p.demo && p.demo !== '#' ? `<a href="${escapeHtml(p.demo)}" target="_blank" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer"><i class="fa-solid fa-eye"></i> معاينة</a>` : ''}
-                                <a href="${escapeHtml(p.buyLink || DEFAULT_DISCORD_LINK)}" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-indigo-600/25 cursor-pointer"><i class="fa-brands fa-discord"></i> التواصل ديسكورد</a>
+                                <a href="${escapeHtml(p.buyLink || DISCORD_SERVER_LINK)}" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-indigo-600/25 cursor-pointer"><i class="fa-brands fa-discord"></i> التواصل ديسكورد</a>
                             </div>
                         </div>
                     </div>
                 `).join('');
-            }
-        }
-
-        function openModal() {
-            document.getElementById('projectId').value = '';
-            document.getElementById('projectForm').reset();
-            document.getElementById('projectBuyLink').value = DEFAULT_DISCORD_LINK;
-            document.getElementById('modalTitle').innerText = 'إضافة مشروع جديد للبيع';
-            document.getElementById('projectModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('projectModal').classList.remove('active');
-        }
-
-        function saveProject(e) {
-            e.preventDefault();
-            const id = document.getElementById('projectId').value;
-            const title = document.getElementById('projectTitle').value;
-            const price = document.getElementById('projectPrice').value;
-            const buyLink = document.getElementById('projectBuyLink').value || DEFAULT_DISCORD_LINK;
-            const desc = document.getElementById('projectDesc').value;
-            const demo = document.getElementById('projectDemo').value || '#';
-            const techStr = document.getElementById('projectTech').value;
-            const tech = techStr.split(',').map(t => t.trim()).filter(t => t.length > 0);
-
-            if (id) {
-                projects = projects.map(p => p.id === id ? { id, title, price, buyLink, desc, demo, tech } : p);
-            } else {
-                const newProj = {
-                    id: Date.now().toString(),
-                    title, price, buyLink, desc, demo, tech
-                };
-                projects.unshift(newProj);
-            }
-
-            localStorage.setItem('my_portfolio_projects', JSON.stringify(projects));
-            closeModal();
-            renderProjects();
-        }
-
-        function editProject(id) {
-            const p = projects.find(item => item.id === id);
-            if (!p) return;
-
-            document.getElementById('projectId').value = p.id;
-            document.getElementById('projectTitle').value = p.title;
-            document.getElementById('projectPrice').value = p.price || '';
-            document.getElementById('projectBuyLink').value = p.buyLink || DEFAULT_DISCORD_LINK;
-            document.getElementById('projectDesc').value = p.desc;
-            document.getElementById('projectDemo').value = p.demo === '#' ? '' : p.demo;
-            document.getElementById('projectTech').value = (p.tech || []).join(', ');
-            
-            document.getElementById('modalTitle').innerText = 'تعديل بيانات المشروع';
-            document.getElementById('projectModal').classList.add('active');
-        }
-
-        function deleteProject(id) {
-            if (confirm('هل أنت متأكد من حذف هذا المشروع من المتجر؟')) {
-                projects = projects.filter(p => p.id !== id);
-                localStorage.setItem('my_portfolio_projects', JSON.stringify(projects));
-                renderProjects();
             }
         }
 
@@ -426,7 +178,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            checkAdminState();
+            renderProjects();
         });
     </script>
 </body>
