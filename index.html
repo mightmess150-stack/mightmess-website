@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mightmess store</title>
+    <title>متجر البرمجيات | MightMess Store</title>
     
     <!-- أيقونة الموقع (Favicon) -->
     <link rel="icon" type="image/png" href="logo.png">
@@ -57,7 +57,7 @@
                 </button>
 
                 <!-- زر تسجيل الدخول / الخروج -->
-                <button id="authBtn" onclick="openLoginModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold border border-gray-700 transition flex items-center gap-2">
+                <button id="authBtn" onclick="openLoginModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold border border-gray-700 transition flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-user-lock text-red-500"></i>
                     <span id="authBtnText">دخول الأدمن</span>
                 </button>
@@ -113,7 +113,7 @@
     </main>
 
     <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div id="loginModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="bg-gray-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-800">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-lg font-bold flex items-center gap-2 text-white">
@@ -130,4 +130,299 @@
                     <input type="email" id="loginEmail" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="mightmess150@gmail.com">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-300">
+                    <label class="block text-sm font-semibold mb-1 text-gray-300">كلمة المرور</label>
+                    <input type="password" id="loginPassword" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="••••••••">
+                </div>
+                
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-2.5 rounded-xl text-sm font-bold bg-red-600 hover:bg-red-700 text-white transition shadow-md shadow-red-600/20 cursor-pointer">تسجيل الدخول</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Project Modal (Admin Only) -->
+    <div id="projectModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-800">
+            <div class="flex items-center justify-between mb-4">
+                <h3 id="modalTitle" class="text-lg font-bold">إضافة مشروع جديد للبيع</h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form id="projectForm" onsubmit="saveProject(event)" class="space-y-4">
+                <input type="hidden" id="projectId">
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-gray-300">اسم المشروع</label>
+                    <input type="text" id="projectTitle" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="مثال: تطبيق متجر إلكتروني متكامل">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1 text-gray-300">السعر (مثال: $25)</label>
+                        <input type="text" id="projectPrice" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="$25">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1 text-gray-300">رابط الشراء (رابط الديسكورد)</label>
+                        <input type="text" id="projectBuyLink" class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="https://discord.gg/9aFpE9Ue">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-gray-300">وصف المشروع</label>
+                    <textarea id="projectDesc" rows="3" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="اكتب التفاصيل والميزات التي سيحصل عليها المشتري..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-gray-300">رابط المعاينة المباشرة (Demo)</label>
+                    <input type="url" id="projectDemo" class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="https://example.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-gray-300">التقنيات (مفصولة بفاصلة)</label>
+                    <input type="text" id="projectTech" required class="w-full px-4 py-2.5 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-500 text-sm text-gray-100" placeholder="HTML, Tailwind CSS, JavaScript">
+                </div>
+                
+                <div class="flex items-center justify-end space-x-3 space-x-reverse pt-2">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700 transition">إلغاء</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-red-600 hover:bg-red-700 text-white transition shadow-md">حفظ المشروع</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-6 text-center text-sm text-gray-400">
+        <p>جميع الحقوق محفوظة &copy; MightMess Store 2026</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const ADMIN_EMAIL = "mightmess150@gmail.com";
+        const ADMIN_PASS = "25802580Ahm@9980";
+
+        let isAdmin = localStorage.getItem('is_admin_logged_in') === 'true';
+
+        const defaultProjects = [
+            {
+                id: '1',
+                title: 'TaskFlow - نظام إدارة المهام والإنتاجية',
+                desc: 'تطبيق متكامل لإدارة المهام وتتبع الإنتاجية مدعوم بمؤقت Pomodoro الذكي مع حفظ البيانات.',
+                price: '$25',
+                demo: '#',
+                buyLink: 'https://discord.gg/9aFpE9Ue',
+                tech: ['HTML5', 'Tailwind CSS', 'JavaScript']
+            }
+        ];
+
+        let projects = defaultProjects;
+        try {
+            const stored = localStorage.getItem('my_portfolio_projects');
+            if (stored) {
+                projects = JSON.parse(stored);
+            }
+        } catch(e) {
+            projects = defaultProjects;
+        }
+
+        function checkAdminState() {
+            const addBtn = document.getElementById('addProjectBtn');
+            const authBtnText = document.getElementById('authBtnText');
+            
+            if (isAdmin) {
+                if (addBtn) addBtn.classList.remove('hidden');
+                if (authBtnText) authBtnText.innerText = "تسجيل الخروج";
+            } else {
+                if (addBtn) addBtn.classList.add('hidden');
+                if (authBtnText) authBtnText.innerText = "دخول الأدمن";
+            }
+            renderProjects();
+        }
+
+        function openLoginModal() {
+            if (isAdmin) {
+                isAdmin = false;
+                localStorage.setItem('is_admin_logged_in', 'false');
+                alert('تم تسجيل الخروج بنجاح');
+                checkAdminState();
+            } else {
+                const modal = document.getElementById('loginModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+
+            if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+                isAdmin = true;
+                localStorage.setItem('is_admin_logged_in', 'true');
+                closeLoginModal();
+                checkAdminState();
+                alert('مرحباً بك يا أدمن! يمكنك الآن إضافة وتعديل المشاريع.');
+            } else {
+                alert('بيانات الدخول غير صحيحة!');
+            }
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const countBadge = document.getElementById('projectsCount');
+            
+            if (countBadge) countBadge.innerText = `${projects.length} مشروع`;
+
+            if (projects.length === 0) {
+                if (grid) grid.innerHTML = '';
+                if (emptyState) emptyState.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyState) emptyState.classList.add('hidden');
+            if (grid) {
+                grid.innerHTML = projects.map(p => `
+                    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-sm hover:border-red-500/50 transition flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-start justify-between mb-3">
+                                <h3 class="font-bold text-lg group-hover:text-red-500 transition text-gray-100">${escapeHtml(p.title)}</h3>
+                                
+                                ${isAdmin ? `
+                                <div class="flex items-center space-x-1 space-x-reverse">
+                                    <button onclick="editProject('${p.id}')" class="w-8 h-8 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 flex items-center justify-center text-xs" title="تعديل">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button onclick="deleteProject('${p.id}')" class="w-8 h-8 rounded-lg bg-red-950/40 text-red-400 hover:bg-red-900/50 flex items-center justify-center text-xs" title="حذف">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>` : ''}
+                            </div>
+
+                            <p class="text-gray-400 text-sm mb-4 line-clamp-3">${escapeHtml(p.desc)}</p>
+                            
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                ${(p.tech || []).map(t => `<span class="px-2.5 py-1 rounded-lg bg-red-950/40 text-red-400 text-xs font-semibold border border-red-900/20">${escapeHtml(t.trim())}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between gap-3">
+                            <span class="text-xl font-black text-white">${escapeHtml(p.price || 'حسب الطلب')}</span>
+                            
+                            <div class="flex items-center gap-2">
+                                ${p.demo && p.demo !== '#' ? `<a href="${escapeHtml(p.demo)}" target="_blank" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold transition flex items-center gap-1.5"><i class="fa-solid fa-eye"></i> معاينة</a>` : ''}
+                                <a href="${escapeHtml(p.buyLink || 'https://discord.gg/9aFpE9Ue')}" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-indigo-600/20"><i class="fa-brands fa-discord"></i> التواصل ديسكورد</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openModal() {
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectForm').reset();
+            document.getElementById('modalTitle').innerText = 'إضافة مشروع جديد للبيع';
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function saveProject(e) {
+            e.preventDefault();
+            const id = document.getElementById('projectId').value;
+            const title = document.getElementById('projectTitle').value;
+            const price = document.getElementById('projectPrice').value;
+            const buyLink = document.getElementById('projectBuyLink').value || 'https://discord.gg/9aFpE9Ue';
+            const desc = document.getElementById('projectDesc').value;
+            const demo = document.getElementById('projectDemo').value || '#';
+            const techStr = document.getElementById('projectTech').value;
+            const tech = techStr.split(',').map(t => t.trim()).filter(t => t.length > 0);
+
+            if (id) {
+                projects = projects.map(p => p.id === id ? { id, title, price, buyLink, desc, demo, tech } : p);
+            } else {
+                const newProj = {
+                    id: Date.now().toString(),
+                    title, price, buyLink, desc, demo, tech
+                };
+                projects.unshift(newProj);
+            }
+
+            localStorage.setItem('my_portfolio_projects', JSON.stringify(projects));
+            closeModal();
+            renderProjects();
+        }
+
+        function editProject(id) {
+            const p = projects.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('projectId').value = p.id;
+            document.getElementById('projectTitle').value = p.title;
+            document.getElementById('projectPrice').value = p.price || '';
+            document.getElementById('projectBuyLink').value = p.buyLink || 'https://discord.gg/9aFpE9Ue';
+            document.getElementById('projectDesc').value = p.desc;
+            document.getElementById('projectDemo').value = p.demo === '#' ? '' : p.demo;
+            document.getElementById('projectTech').value = (p.tech || []).join(', ');
+            
+            document.getElementById('modalTitle').innerText = 'تعديل بيانات المشروع';
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function deleteProject(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المشروع من المتجر؟')) {
+                projects = projects.filter(p => p.id !== id);
+                localStorage.setItem('my_portfolio_projects', JSON.stringify(projects));
+                renderProjects();
+            }
+        }
+
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        function updateThemeIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun text-amber-400';
+            } else {
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon text-gray-300';
+            }
+        }
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.theme = 'light';
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.theme = 'dark';
+                }
+                updateThemeIcon();
+            });
+        }
+
+        // Initialize on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAdminState();
+        });
+    </script>
+</body>
+</html>
